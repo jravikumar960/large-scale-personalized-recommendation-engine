@@ -26,6 +26,7 @@ models/**/*.keras
 models/**/*.h5
 models/**/*.joblib
 models/**/*.weights.h5
+models/**/*.index
 models/airflow_run_manifest.json
 models/*_metrics.json
 logs/
