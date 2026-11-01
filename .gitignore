@@ -1,0 +1,65 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Data and datasets
+data/raw/
+data/processed/*.csv
+data/processed/*.json
+
+# Model artifacts and generated outputs
+models/*.joblib
+models/*.json
+models/*.npy
+models/*.keras
+models/**/*.json
+models/**/*.npy
+models/**/*.keras
+models/**/*.h5
+models/**/*.joblib
+models/**/*.weights.h5
+models/airflow_run_manifest.json
+models/*_metrics.json
+logs/
+*.log
+
+# Frontend
+web/node_modules/
+web/dist/
+web/.vite/
+
+
+# Temporary, debug, patch, and experiment scripts
+scripts/patch_*.py
+scripts/debug_*.py
+scripts/diag_*.py
+scripts/exp_*.py
+scripts/fix_*.py
+scripts/test_*.py
+scripts/*_test.py
+
+# Generated local files
+uvicorn.err
+uvicorn.log
+data/processed/split_manifest.txt
+data/processed/split_manifest.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+web/dev.err
+scripts/airflow_print.txt
+
+# Triton generated model artifacts
+triton/model_repository/*/1/model.savedmodel/

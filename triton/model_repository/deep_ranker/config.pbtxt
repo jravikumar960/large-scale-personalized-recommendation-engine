@@ -1,0 +1,18 @@
+name: "deep_ranker"
+backend: "tensorflow"
+max_batch_size: 64
+input [
+  {
+    name: "features"
+    data_type: TYPE_FP32
+    dims: [ 4 ]
+  }
+]
+output [
+  {
+    name: "score"
+    data_type: TYPE_FP32
+    dims: [ 1 ]
+  }
+]
+instance_group [ { kind: KIND_CPU } ]

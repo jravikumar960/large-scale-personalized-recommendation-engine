@@ -1,0 +1,4 @@
+﻿tensorflow-recommenders
+faiss-cpu
+redis
+pyspark
