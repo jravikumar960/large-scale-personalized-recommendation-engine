@@ -17,13 +17,11 @@ CF_SVD_PATH = Path(os.getenv("CF_SVD_PATH", "models/cf_svd"))
 MODEL_VERSION = os.getenv("MODEL_VERSION", "1")
 
 app = FastAPI(title="Personalized Recommendation Engine", version="0.2.1", description="Two-stage movie recommendation API")
-@app.on_event("startup")
-def _startup():
-    get_model()
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:4173", "http://127.0.0.1:4173"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
@@ -80,7 +78,7 @@ def get_model():
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "model_loaded": _model is not None, "deep_ranker_loaded": bool(getattr(_model, "deep_rank_model", None)), "cf_svd_loaded": _cf_retriever is not None, "cf_svd_error": _cf_error, "model_path": str(MODEL_PATH), "model_version": MODEL_VERSION}
+    return {"status": "ok", "model_loaded": _model is not None, "deep_ranker_loaded": bool(getattr(_model, "deep_rank_model", None)), "cf_svd_loaded": _cf_retriever is not None, "cf_svd_error": _cf_error, "cache_backend": "redis" if getattr(_cache, "_redis", None) is not None else "in-memory", "redis_connected": getattr(_cache, "_redis", None) is not None, "model_path": str(MODEL_PATH), "model_version": MODEL_VERSION}
 
 
 @app.get("/recommendations/{user_id}")
@@ -123,6 +121,42 @@ def movie_details(movie_id: int):
     return item_details(movie_id)
 
 
+@app.get("/dataset")
+def dataset():
+    base = Path("data/processed")
+    def count_lines(path: Path):
+        if not path.exists():
+            return None
+        try:
+            with path.open("rb") as handle:
+                return max(sum(1 for _ in handle) - 1, 0)
+        except OSError:
+            return None
+    cf_users = None
+    cf_items = None
+    user_ids_path = CF_SVD_PATH / "user_ids.json"
+    item_ids_path = CF_SVD_PATH / "item_ids.json"
+    try:
+        if user_ids_path.exists():
+            import json
+            cf_users = len(json.loads(user_ids_path.read_text(encoding="utf-8")))
+        if item_ids_path.exists():
+            import json
+            cf_items = len(json.loads(item_ids_path.read_text(encoding="utf-8")))
+    except Exception:
+        pass
+    return {
+        "dataset": "MovieLens 25M (processed split)",
+        "movies": count_lines(base / "movies.csv"),
+        "ratings_total": count_lines(base / "ratings.csv"),
+        "train_ratings": count_lines(base / "train.csv"),
+        "validation_ratings": count_lines(base / "validation.csv"),
+        "test_ratings": count_lines(base / "test.csv"),
+        "cf_svd_users": cf_users,
+        "cf_svd_items": cf_items,
+        "deep_ranker_available": DEEP_RANKER_PATH.exists(),
+        "two_tower_available": Path("models/two_tower").exists(),
+    }
 @app.get("/metrics")
 def metrics():
     if not METRICS_PATH.exists():
