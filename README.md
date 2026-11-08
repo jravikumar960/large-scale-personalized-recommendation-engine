@@ -88,3 +88,25 @@ Airflow is not installed as a runnable runtime in this environment; DAG structur
 - Two-tower retrieval Recall@10=0.0 on 50 eligible users.
 - Backend tests: 50 passed, 3 warnings.
 - Frontend production build: passed.
+
+  ##Screen Shots
+
+  ##Dashboard
+  <img width="1917" height="747" alt="image" src="https://github.com/user-attachments/assets/ce7904a9-cb72-494a-91c3-f6e7e6e0cedc" />
+
+  ##Recommendations
+  <img width="1913" height="923" alt="image" src="https://github.com/user-attachments/assets/b9045a09-73ee-4f06-a9ab-7801aee7fee9" />
+
+  ##Discovery
+  <img width="1910" height="903" alt="image" src="https://github.com/user-attachments/assets/d919a362-1447-49b8-8612-9081cf4d7345" />
+
+  ##Compare Users
+  <img width="1917" height="923" alt="image" src="https://github.com/user-attachments/assets/5d790ee4-8e24-4995-bd00-45ca229b9f44" />
+
+  #Model Insights
+  <img width="1917" height="937" alt="image" src="https://github.com/user-attachments/assets/2ca7d271-fba2-4811-8198-696f90990f50" />
+  
+
+
+
+
